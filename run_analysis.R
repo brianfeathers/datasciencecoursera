@@ -120,7 +120,7 @@ measurementsFinal <- join(measurementList[[1]], measurementList[[2]], by=temp, t
 measurementsFinal <- measurementsFinal[, -1]
 
 ## Use ddply to average the mean and std measurements within each group of subjects, activities, and variables, then reduce the data frame to the unique values, and drop the original mean and std columns
-output <- unique(ddply(measurementsFinal, .(subject, activity, signal.domain, sensor, accel.source, rate.type, measure.type, axis, mean, std), summarize, mean_avg=ave(mean, FUN=sum), std_avg=ave(std, FUN=sum)))
-output <- output[, c(-9, -10)]
+output <- ddply(measurementsFinal, .(subject, activity, signal.domain, sensor, accel.source, rate.type, measure.type, axis), summarize, mean_avg=ave(mean), std_avg=ave(std))
+output <- unique(output)
 
 write.table(output, "run_analysis.txt", quote=FALSE, sep="\t", row.names=FALSE)
